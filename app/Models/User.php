@@ -58,4 +58,10 @@ class User extends Authenticatable
      {
          return $this->hasMany(Comment::class);
      }
+
+        // Relação: um usuário tem muitas transações
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
 }
