@@ -24,7 +24,7 @@ class TransactionSeeder extends Seeder
             for ($i = 0; $i < 50; $i++) {
                 Transaction::create([
                     // 'user_id'     => $user->id,
-                    'user_id'     => 5,
+                    'user_id'     => 1,
                     'category_id' => $categories->random()->id,
                     'amount'      => $faker->randomFloat(2, 10, 1000),
                     'date'        => Carbon::now()->subDays(rand(0, 365)),

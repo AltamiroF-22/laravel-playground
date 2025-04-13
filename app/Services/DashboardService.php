@@ -32,24 +32,41 @@ class DashboardService
             });
         }
 
-        return [
-            'monthlyData' => (clone $query)
-                ->select(
-                    DB::raw("DATE_FORMAT(date, '%Y-%m') as month"),
-                    DB::raw("SUM(amount) as total")
-                )
-                ->groupBy('month')
-                ->orderBy('month')
-                ->get(),
+        // Consulta para dados mensais agrupados por categoria
+        $monthlyCategoryData = (clone $query)
+            ->select(
+                DB::raw("DATE_FORMAT(date, '%Y-%m') as month"),
+                'category_id',
+                DB::raw("SUM(amount) as total")
+            )
+            ->groupBy('month', 'category_id')
+            ->orderBy('month')
+            ->with('category') // Caso você precise dos dados da categoria
+            ->get();
 
-            'categoryData' => (clone $query)
-                ->select(
-                    'category_id',
-                    DB::raw("SUM(amount) as total")
-                )
-                ->groupBy('category_id')
-                ->with('category')
-                ->get(),
+        // Se ainda quiser manter as agregações separadas
+        $monthlyData = (clone $query)
+            ->select(
+                DB::raw("DATE_FORMAT(date, '%Y-%m') as month"),
+                DB::raw("SUM(amount) as total")
+            )
+            ->groupBy('month')
+            ->orderBy('month')
+            ->get();
+
+        $categoryData = (clone $query)
+            ->select(
+                'category_id',
+                DB::raw("SUM(amount) as total")
+            )
+            ->groupBy('category_id')
+            ->with('category')
+            ->get();
+
+        return [
+            'monthlyCategoryData' => $monthlyCategoryData,
+            'monthlyData' => $monthlyData,
+            'categoryData' => $categoryData,
         ];
     }
 }
