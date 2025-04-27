@@ -5,7 +5,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue";
 import {
     Chart as ChartJS,
     Title,
@@ -16,6 +15,7 @@ import {
     LinearScale,
     PointElement,
 } from "chart.js";
+
 import { Line } from "vue-chartjs";
 
 ChartJS.register(

@@ -6,15 +6,16 @@ export default defineNuxtConfig({
     devtools: { enabled: true },
 
     modules: [
-        "@nuxt/content",
-        "@nuxt/image",
-        "@nuxt/icon",
-        "@nuxt/scripts",
-        "@nuxt/fonts",
-        "@pinia/nuxt",
-        "pinia-plugin-persistedstate/nuxt",
-        "shadcn-nuxt",
+      "@nuxt/content",
+      "@nuxt/image",
+      "@nuxt/icon",
+      "@nuxt/scripts",
+      "@nuxt/fonts",
+      "@pinia/nuxt",
+      "pinia-plugin-persistedstate/nuxt",
+      "shadcn-nuxt",
     ],
+    
 
     vite: {
         plugins: [tailwindcss()],

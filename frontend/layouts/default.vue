@@ -1,14 +1,26 @@
 <template>
-    <nav
-        class="w-full bg-white bg-blur-6 p-5 border-b flex gap-4 justify-between"
-    >
-        <h1>LOGO</h1>
-        <ul class="flex gap-4">
-            <li>op</li>
-            <li>op</li>
-            <li>op</li>
-            <li>op</li>
-        </ul>
-    </nav>
-    <slot></slot>
+    <UiSidebarProvider :style="{ '--sidebar-width': '350px' }">
+        <AppSidebar />
+        <UiSidebarInset>
+            <header
+                class="sticky top-0 flex shrink-0 items-center gap-2 border-b bg-background p-4 mx-2"
+            >
+                <UiSidebarTrigger class="-ml-1" />
+                <UiSeparator orientation="vertical" class="mr-2 h-4" />
+                <UiBreadcrumb>
+                    <h1 class="font-semibold text-md">{{ pageTitle }}</h1>
+                </UiBreadcrumb>
+            </header>
+            <div class="flex flex-1 flex-col gap-4 p-4">
+                <slot />
+            </div>
+        </UiSidebarInset>
+    </UiSidebarProvider>
 </template>
+<script setup lang="ts">
+import { computed } from "vue";
+import { useRoute } from "vue-router";
+
+const route = useRoute();
+const pageTitle = computed(() => (route.meta.title as string) || "All Inboxes");
+</script>

@@ -50,7 +50,9 @@ const router = useRouter();
 const handleSubmit = () => {
     auth.login();
 };
-
+definePageMeta({
+    layout: false,
+});
 watch(
     () => auth.token,
     (newToken) => {
