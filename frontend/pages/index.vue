@@ -8,6 +8,14 @@
 </template>
 
 <script setup lang="ts">
+import { usePageTitle } from "@/composables/usePageTitle";
 
+const pageTitle = usePageTitle();
+pageTitle.value = "Minhas Movimentações | Dashboard";
+
+// exemplo para mudar o title na mesma rota 
+// if (tabelaSelecionada.value === 'investimentos') {
+//   pageTitle.value = 'Dashboard de Investimentos'
+// }
 
 </script>

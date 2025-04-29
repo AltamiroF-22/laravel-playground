@@ -40,7 +40,9 @@
 
             <UiSidebarContent>
                 <UiSidebarGroup>
-                    <UiSidebarGroupContent class="px-1.5 md:px-0">
+                    <UiSidebarGroupContent
+                        class="px-1.5 hidden md:px-0 md:block"
+                    >
                         <UiSidebarMenu>
                             <UiSidebarMenuItem
                                 v-for="item in data"
@@ -49,7 +51,7 @@
                                 <UiSidebarMenuButton
                                     :is-active="activeItem.title === item.title"
                                     class="px-2.5 md:px-2"
-                                    @click="setActiveItem(item)"
+                                    @click="setActiveItem(item), setOpen(true)"
                                 >
                                     <component :is="item.icon" />
                                     <span>{{ item.title }}</span>
@@ -57,12 +59,64 @@
                             </UiSidebarMenuItem>
                         </UiSidebarMenu>
                     </UiSidebarGroupContent>
+
+                    <!-- SUBMENU MOBILE (ACCORDION) -->
+                    <UiSidebar collapsible="none" class="flex md:hidden flex-1">
+                        <UiSidebarContent>
+                            <UiAccordion
+                                type="single"
+                                collapsible
+                                class="w-full"
+                                :default-value="activeItem.title"
+                            >
+                                <UiAccordionItem
+                                    v-for="item in data"
+                                    :key="item.title"
+                                    :value="item.title"
+                                >
+                                    <UiAccordionTrigger
+                                        class="flex items-center justify-between px-4 py-3"
+                                        @click="
+                                            setActiveItem(item), setOpen(true)
+                                        "
+                                    >
+                                        <div class="flex items-center gap-2">
+                                            <component
+                                                :is="item.icon"
+                                                class="size-4"
+                                            />
+                                            <span>{{ item.title }}</span>
+                                        </div>
+                                    </UiAccordionTrigger>
+                                    <UiAccordionContent class="px-4 py-2">
+                                        <a
+                                            v-for="sub in item.subUrls"
+                                            :key="sub.label"
+                                            :href="sub.href"
+                                            class="flex items-center gap-2 py-2 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground rounded"
+                                        >
+                                            <component
+                                                :is="sub.icon"
+                                                class="size-4"
+                                            />
+                                            <span>{{ sub.label }}</span>
+                                        </a>
+                                    </UiAccordionContent>
+                                </UiAccordionItem>
+                            </UiAccordion>
+                        </UiSidebarContent>
+                    </UiSidebar>
                 </UiSidebarGroup>
             </UiSidebarContent>
         </UiSidebar>
 
         <!-- Sidebar de sub-itens -->
         <UiSidebar collapsible="none" class="hidden flex-1 md:flex">
+            <div class="hidden md:flex w-full px-2 py-4">
+                <p class="text-gray-500 italic text-sm">
+                    colocar algo aqui ? nome ? logo? input ?
+                </p>
+            </div>
             <UiSidebarContent>
                 <UiSidebarGroup class="px-0">
                     <UiSidebarGroupContent>
@@ -70,7 +124,7 @@
                             v-for="sub in subUrls"
                             :key="sub.label"
                             :href="sub.href"
-                            class="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground flex flex-col items-start gap-2 border-b p-4 text-sm leading-tight whitespace-nowrap last:border-b-0"
+                            class="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground flex flex-col items-start border-b px-4 py-5 text-sm first:border-t"
                         >
                             <div class="flex w-full items-center gap-2">
                                 <component :is="sub.icon" class="size-4" />
@@ -85,7 +139,6 @@
 </template>
 
 <script setup lang="ts">
-import { type SidebarProps } from "@/components/ui/sidebar";
 import {
     Home,
     BarChart2,
@@ -99,12 +152,12 @@ import {
     Bell,
     Settings,
     Inbox,
-    Command,
     Send,
     ArchiveX,
     Trash2,
 } from "lucide-vue-next";
-import { ref, computed } from "vue";
+
+import { useSidebar, type SidebarProps } from "./ui/sidebar";
 
 interface SubUrl {
     label: string;
@@ -200,6 +253,7 @@ const data = ref<NavItem[]>([
 
 const activeItem = ref<NavItem>(data.value[0]);
 const subUrls = computed(() => activeItem.value.subUrls);
+const { setOpen } = useSidebar();
 
 function setActiveItem(item: NavItem) {
     activeItem.value = item;

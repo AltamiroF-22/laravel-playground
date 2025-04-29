@@ -17,10 +17,8 @@
         </UiSidebarInset>
     </UiSidebarProvider>
 </template>
-<script setup lang="ts">
-import { computed } from "vue";
-import { useRoute } from "vue-router";
+<script setup>
+import { providePageTitle } from "@/composables/usePageTitle";
 
-const route = useRoute();
-const pageTitle = computed(() => (route.meta.title as string) || "All Inboxes");
+const pageTitle = providePageTitle();
 </script>
