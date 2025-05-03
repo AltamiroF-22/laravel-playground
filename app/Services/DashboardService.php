@@ -69,4 +69,21 @@ class DashboardService
             'categoryData' => $categoryData,
         ];
     }
+
+    public function postDashboardData(array $data, int $userId)
+    {
+        // Validação básica (pode ser feita antes, no controller, idealmente com FormRequest)
+        if (empty($data['amount']) || empty($data['date']) || empty($data['category_id'])) {
+            throw new \InvalidArgumentException("Campos obrigatórios faltando: amount, date ou category_id.");
+        }
+    
+        return Transaction::create([
+            'user_id' => $userId,
+            'amount' => $data['amount'],
+            'date' => Carbon::parse($data['date']),
+            'category_id' => $data['category_id'],
+            'description' => $data['description'] ?? null,
+        ]);
+    }
+    
 }

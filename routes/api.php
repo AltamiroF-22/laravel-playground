@@ -15,9 +15,5 @@ Route::post('/login',[LoginController::class, 'login' ]);
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index']);
-
-    Route::get('/broadcast', function () {
-        event(new MessageSent('Olá, WebSocket!'));
-        return 'The book is on the table';
-    });
+    Route::post('/dashboard', [DashboardController::class, 'store']);
 });

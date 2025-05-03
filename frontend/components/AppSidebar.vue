@@ -18,7 +18,7 @@
                         >
                             <a href="#" class="flex gap-3 border-b pb-4">
                                 <div
-                                    class="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground"
+                                    class="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-sidebar-primary-foreground"
                                 >
                                     <TrendingUp class="size-4" />
                                 </div>
@@ -112,9 +112,9 @@
 
         <!-- Sidebar de sub-itens -->
         <UiSidebar collapsible="none" class="hidden flex-1 md:flex">
-            <div class="hidden md:flex w-full px-2 py-4">
-                <p class="text-gray-500 italic text-sm">
-                    colocar algo aqui ? nome ? logo? input ?
+            <div class="hidden md:flex w-full px-2 pb-2 pt-3">
+                <p class="text-primary font-bold text-2xl">
+                    CashWise 
                 </p>
             </div>
             <UiSidebarContent>

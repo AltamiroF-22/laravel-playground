@@ -20,10 +20,20 @@ export const useAmountMovimentation = defineStore("movimentation", () => {
 
     const monthlyCategoryData = ref<MonthlyCategoryData[]>([]);
 
-    const params = ref({
-        start_date: "",
-        end_date: "",
+    const currentYear = new Date().getFullYear();
+    const today = new Date().toISOString().slice(0, 10);
+
+    const params = reactive({
+        start_date: `${currentYear}-01-01`,
+        end_date: today,
         category_name: "",
+    });
+
+    const form = ref({
+        amount: 0,
+        date: today,
+        category_id: 1,
+        description: null,
     });
 
     const chartColors = ["#7c3aed", "#38bdf8", "#34d399", "#fbbf24"];
@@ -39,7 +49,7 @@ export const useAmountMovimentation = defineStore("movimentation", () => {
             const response = await axios.get(
                 "http://127.0.0.1:8000/api/dashboard",
                 {
-                    params: params.value,
+                    params: params,
 
                     headers: {
                         Authorization: `Bearer ${auth}`,
@@ -67,5 +77,6 @@ export const useAmountMovimentation = defineStore("movimentation", () => {
         months,
         fetchMonthlyCategoryData,
         params,
+        form,
     };
 });
