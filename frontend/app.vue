@@ -1,5 +1,10 @@
 <template>
     <NuxtLayout>
-      <NuxtPage />
+        <NuxtPage />
     </NuxtLayout>
-  </template>
+    <Toaster position="top-right" />
+</template>
+
+<script setup>
+import { Toaster } from "@/components/ui/sonner";
+</script>

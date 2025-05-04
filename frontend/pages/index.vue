@@ -87,16 +87,13 @@
 import { ref, computed, watch } from "vue";
 import { parseDate, today, getLocalTimeZone } from "@internationalized/date";
 import { usePageTitle } from "@/composables/usePageTitle";
-
-// Título da página
+import { toast } from "vue-sonner";
 const pageTitle = usePageTitle();
 pageTitle.value = "Minhas Movimentações | Dashboard";
 
-// Acesso ao store
 const { form, params } = useAmountMovimentation();
 const store = useAmountMovimentation();
 
-// Inicializa a data com string no formato "YYYY-MM-DD"
 form.date = form.date;
 
 // Computed para sincronizar <UiCalendar> com form.date
@@ -107,7 +104,6 @@ const calendar = computed({
     },
 });
 
-// Para o RangeCalendar (manter como está)
 const value = ref({
     start: parseDate(params.start_date),
     end: parseDate(params.end_date),
@@ -119,9 +115,34 @@ watch(value, (newValue) => {
     store.fetchMonthlyCategoryData();
 });
 
-// Função de envio
-const handleSubmit = () => {
-    // Lógica para adicionar a movimentação
-    console.log("Movimentação adicionada", form);
+
+const handleSubmit = async () => {
+    try {
+        await store.postMonthlyCategoryData();
+
+        form.amount = 0;
+        form.description = "";
+        form.category_id = 1;
+        form.date = today(getLocalTimeZone()).toString();
+
+        toast.success("Adicionado com sucesso", {
+            description: "Uma movimentação foi adicionada ao seu gráfico",
+        });
+    } catch (e) {
+        // Se o backend mandar um array de mensagens (como Laravel costuma mandar)
+        const msg = e.response?.data?.message || "Erro inesperado";
+        const errors = e.response?.data?.errors;
+
+        let description = msg;
+
+        // Se tiver erros específicos
+        if (errors) {
+            description = Object.values(errors).flat().join("\n");
+        }
+
+        toast.error("Erro ao adicionar", {
+            description,
+        });
+    }
 };
 </script>

@@ -3,7 +3,7 @@
         <AppSidebar />
         <UiSidebarInset>
             <header
-                class="sticky top-0 flex shrink-0 items-center gap-2 border-b bg-background p-4 mx-2"
+                class="sticky top-0 flex shrink-0 items-center gap-2 border-b bg-background p-4 mx-2 z-90"
             >
                 <UiSidebarTrigger class="-ml-1" />
                 <UiSeparator orientation="vertical" class="mr-2 h-4" />

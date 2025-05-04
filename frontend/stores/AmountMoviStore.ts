@@ -44,6 +44,15 @@ export const useAmountMovimentation = defineStore("movimentation", () => {
         ).sort();
     });
 
+    const postMonthlyCategoryData = async () => {
+        await axios.post("http://127.0.0.1:8000/api/dashboard", form.value, {
+            headers: {
+                Authorization: `Bearer ${auth}`,
+                "Content-Type": "application/json",
+            },
+        });
+    };
+
     const fetchMonthlyCategoryData = async () => {
         try {
             const response = await axios.get(
@@ -73,6 +82,7 @@ export const useAmountMovimentation = defineStore("movimentation", () => {
 
     return {
         monthlyCategoryData,
+        postMonthlyCategoryData,
         chartColors,
         months,
         fetchMonthlyCategoryData,
